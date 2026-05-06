@@ -54,7 +54,7 @@ class Database() : DatabaseCore("database")
 
 class Item(string name, double amount)
 {
-  public int Id { get; set; } = default!;
-  public string Name { get; set; } = name;
-  public double Amount { get; set; } = amount;
+  public int ID { get; set; } = default!;
+  public string Username { get; set; } = name;
+  public double Password { get; set; } = amount;
 }
