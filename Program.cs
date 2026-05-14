@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
 using Project.ServerUtilities;
@@ -25,16 +27,28 @@ class Program
 
       try
       {
-        if (request.Name == "getItems")
+        if (request.Name == "signUp")
         {
-          request.Respond(database.Items);
-        }
-        else if (request.Name == "addItem")
-        {
-          var (name, amount) = request.GetParams<(string, int)>();
-          var item = new Item(name, amount);
-          database.Items.Add(item);
+          var (username, password) = request.GetParams<(string, string)>();
+
+          if (database.Users.Any(u => u.Username == username))
+          {
+            request.Respond<string?>(null);
+            continue;
+          }
+
+          string token = Guid.NewGuid().ToString();
+          User user = new User(token, username, password);
+          database.Users.Add(user);
           database.SaveChanges();
+          request.Respond(token);
+        }
+
+        if (request.Name == "logIn")
+        {
+          var (username, password) = request.GetParams<(string, string)>();
+          var user = database.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+          request.Respond(user?.Token);
         }
       }
       catch (Exception exception)
@@ -49,12 +63,13 @@ class Program
 
 class Database() : DatabaseCore("database")
 {
-  public DbSet<Item> Items { get; set; } = default!;
+  public DbSet<User> Users { get; set; } = default!;
 }
 
-class Item(string name, double amount)
+class User(string token, string username, string password)
 {
   public int Id { get; set; } = default!;
-  public string Name { get; set; } = name;
-  public double Amount { get; set; } = amount;
+  [JsonIgnore] public string Token { get; set; } = token;
+  public string Username { get; set; } = username;
+  [JsonIgnore] public string Password { get; set; } = password;
 }
