@@ -26,6 +26,7 @@ SignupButton.onclick = async function() {
 
         if (validCount != UserNameInput.value.length) {
             errorDiv.innerText == "Certain characters are invalid. Remove them and try again. ";
+            return;
         }
         
         if (UserNameInput.value.length < 3) {
@@ -45,7 +46,7 @@ SignupButton.onclick = async function() {
         }
         
         localStorage.setItem("token", token);
-        location.href = "index.html";
+        location.href = "Game.html";
     }
     else {
         errorDiv.innerText = "Passwords don't match. Please try again.";

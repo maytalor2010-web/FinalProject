@@ -16,6 +16,6 @@ LoginButton.onclick = async function () {
     }
 
     localStorage.setItem("token", token);
-    location.href = "index.html";
+    location.href = "Game.html";
 
 }
