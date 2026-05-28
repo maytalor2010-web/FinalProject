@@ -1,0 +1,22 @@
+
+
+
+
+
+@keyframes slideLtoR {
+  0% {
+    transform: translateX(0); /* Starts at original position */
+  }
+  100% {
+    transform: translateX(calc(100vw)); /* Ends at edge of screen */
+  }
+}
+
+@keyframes slideRtoL {
+  0% {
+    transform: translateX(100vw); /* Starts at original position */
+  }
+  100% {
+    transform: translateX(calc(0 - 50px)); /* Ends at edge of screen */
+  }
+}
