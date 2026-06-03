@@ -1,6 +1,6 @@
-import type { Item } from "types";
+import type { User } from "types";
 import { send } from "clientUtilities";
-import { create, get } from "componentUtilities";
+import { create } from "componentUtilities";
 
 
 var UserNameInput = document.querySelector<HTMLInputElement>("#username")!;
