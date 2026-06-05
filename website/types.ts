@@ -9,4 +9,5 @@ export type User = {
   password: string;
   id: number;
   token: string;
+  highScore: number;
 }

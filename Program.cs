@@ -50,6 +50,29 @@ class Program
           var user = database.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
           request.Respond(user?.Token);
         }
+
+        if (request.Name == "getUser")
+        {
+          var token = request.GetParams<string>();
+          var user = database.Users.FirstOrDefault(u => u.Token == token);
+          request.Respond(user);
+        }
+
+        if (request.Name == "setHighScore")
+        {
+          var (token, userHighScore) = request.GetParams<(string, int)>();
+          Console.WriteLine($"DEBUG: Received token {token} and score {userHighScore}");
+          var user = database.Users.FirstOrDefault(u => u.Token == token);
+          if(user == null)
+          {
+            request.Respond<string?>(null);
+            continue;
+          }
+          user.HighScore = userHighScore;
+          database.Entry(user).State = EntityState.Modified;
+          database.SaveChanges();
+          request.Respond(user);
+        }
       }
       catch (Exception exception)
       {
@@ -72,4 +95,5 @@ class User(string token, string username, string password)
   [JsonIgnore] public string Token { get; set; } = token;
   public string Username { get; set; } = username;
   [JsonIgnore] public string Password { get; set; } = password;
+  public int HighScore { get; set; } = 0;
 }

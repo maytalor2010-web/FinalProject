@@ -12,6 +12,10 @@ var validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890
 var validCount = 0;
 
 SignupButton.onclick = async function() {
+
+    var validCount = 0;
+    errorDiv.innerText = "";
+
     if (PasswordInput.value == ConfirmInput.value) {
         
 
@@ -19,13 +23,13 @@ SignupButton.onclick = async function() {
         for(var i = 0; i<UserNameInput.value.length; i++) {
             for(var k = 0; k<validChars.length; k++) {
                 if (UserNameInput.value[i] == validChars[k]) {
-                    validCount =+ 1;
+                    validCount += 1;
                 }
             }
         }
 
         if (validCount != UserNameInput.value.length) {
-            errorDiv.innerText == "Certain characters are invalid. Remove them and try again. ";
+            errorDiv.innerText = "Certain characters are invalid. Remove them and try again. ";
             return;
         }
         
@@ -33,7 +37,7 @@ SignupButton.onclick = async function() {
             errorDiv.innerText = "The Username is too short. ";
             return;
         }
-        else if (UserNameInput.value.length > 20) {
+        else if (UserNameInput.value.length > 15) {
             errorDiv.innerText = "The Username is too long. "
             return;
         }
