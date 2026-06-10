@@ -25,9 +25,26 @@ body {
 }
 
 #leaderboardDiv {
+  display: flex;
+  flex-direction: row;
   height: 80%;
   width: 100%;
   background-color: black;
+}
+
+#LDBscores {
+  display: grid;
+  grid-template-columns: 1fr;              /* Creates 1 single column */
+  grid-template-rows: repeat(10, 1fr);     /* Creates 10 equal-height rows */
+  gap: 10px;                               /* Optional: Adds spacing between items */
+  height: 100vh;                           /* Optional: Gives the grid a target height */
+  background-color: darkblue;
+}
+
+  .LDBUser {
+    display: flex;
+    justify-content: space-between;
+    background-color: aquamarine;
 }
 
 

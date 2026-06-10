@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
 using Project.ServerUtilities;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 class Program
 {
@@ -73,6 +74,36 @@ class Program
           database.SaveChanges();
           request.Respond(user);
         }
+
+        if (request.Name == "submitScore")
+        {
+          var (token, score) = request.GetParams<(string, int)>();
+          var user = database.Users.FirstOrDefault(u => u.Token == token);
+          var NewScore = new UScore(user!.Id, score);
+        }
+
+        if (request.Name == "getTop10")
+        {
+          var scores = database.Scores.OrderBy(score => -score.Amount).Take(10).ToArray();
+          request.Respond(scores);
+        }
+
+        if (request.Name == "getPlacement")
+        {
+          var token = request.GetParams<string>();
+          var user = database.Users.FirstOrDefault(u => u.Token == token);
+          var scores = database.Scores.OrderBy(score => -score.Amount).Take(10).ToArray();
+
+          for (var i = 0; i<scores.Length; i++)
+          {
+            var UserByID = database.Users.FirstOrDefault(u => u.Id == scores[i].UserID);
+            if (UserByID == user)
+            {
+              request.Respond(i+1);
+            }
+          }
+          request.Respond<string?>(null);
+        }
       }
       catch (Exception exception)
       {
@@ -87,6 +118,7 @@ class Program
 class Database() : DatabaseCore("database")
 {
   public DbSet<User> Users { get; set; } = default!;
+  public DbSet<UScore> Scores { get; set; } = default!;
 }
 
 class User(string token, string username, string password)
@@ -96,4 +128,11 @@ class User(string token, string username, string password)
   public string Username { get; set; } = username;
   [JsonIgnore] public string Password { get; set; } = password;
   public int HighScore { get; set; } = 0;
+}
+
+
+class UScore(int userId, int amount)
+{
+  public int UserID = userId;
+  public int Amount = amount;
 }

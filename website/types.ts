@@ -11,3 +11,8 @@ export type User = {
   token: string;
   highScore: number;
 }
+
+export type UScore = {
+  UserID: number;
+  Amount: number;
+}

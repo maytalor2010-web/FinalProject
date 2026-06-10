@@ -1,19 +1,40 @@
-import type { User } from "types";
+import type { User, UScore } from "types";
 import { send } from "clientUtilities";
 import { create } from "componentUtilities";
 
-let SpawnFishInterval: number;
 
-var StartButton = document.querySelector<HTMLButtonElement>("#startButton")!;
-var TryAgainButton = document.querySelector<HTMLButtonElement>("#tryAgainButton")!;
-var FishSpawnDiv = document.querySelector<HTMLDivElement>("#fishSpawnDiv")!;
-var HeartAmountP = document.querySelector<HTMLParagraphElement>("#heartAmountP")!;
-var ScoreP = document.querySelector<HTMLParagraphElement>("#scoreP")!;
+let SpawnFishInterval: number;
+let Token = localStorage.getItem("token")
+//Leaderboard Setup HERE:
+
+let Top10Users = await send("getTop10");
+let LeaderboardDiv = document.querySelector<HTMLDivElement>("#leaderboardDiv");
+
+for (let i = 0; i<10; i++)
+{
+    let UserPlacement = await send("getPlacement", Token)
+    LeaderboardDiv?.append(
+        create("div", {className: "LDBUser"}, 
+            create("div", {className: "LDBUserInfo", innerText: ""}) //Rank and Username
+            create("div", {className: "LDBUserInfo", innerText: ""}) //Score
+        )
+    )
+}
+
+
+
+//Game Code HERE:
+
+let StartButton = document.querySelector<HTMLButtonElement>("#startButton")!;
+let TryAgainButton = document.querySelector<HTMLButtonElement>("#tryAgainButton")!;
+let FishSpawnDiv = document.querySelector<HTMLDivElement>("#fishSpawnDiv")!;
+let HeartAmountP = document.querySelector<HTMLParagraphElement>("#heartAmountP")!;
+let ScoreP = document.querySelector<HTMLParagraphElement>("#scoreP")!;
 
 const HeartAmount = 3;           //the amount of hearts every game starts with
-var FishClickedCount = 0;     //resets every game
-var ScoreCount = 0;           //resets every game
-var FishScoreAdd = 0;         //the amount of points a fish adds to the total score (ScoreCount). Varies per fish. 
+let FishClickedCount = 0;     //resets every game
+let ScoreCount = 0;           //resets every game
+let FishScoreAdd = 0;         //the amount of points a fish adds to the total score (ScoreCount). Varies per fish. 
 
 localStorage.setItem("score", ScoreCount.toString());
 
@@ -33,7 +54,7 @@ StartButton.onclick = function () {
             CreateFish();
         }
         else {
-            var Token = localStorage.getItem("token");
+            Token = localStorage.getItem("token");
             var user = await send<User | null>("getUser", Token);
             HeartAmountP.innerText = "Game over. ";
             var FinalGameScore = parseInt(localStorage.getItem("score")!);
