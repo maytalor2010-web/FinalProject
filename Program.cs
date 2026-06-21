@@ -6,6 +6,7 @@ using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
 using Project.ServerUtilities;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using System.Linq.Expressions;
 
 class Program
 {
@@ -59,50 +60,91 @@ class Program
           request.Respond(user);
         }
 
-        if (request.Name == "setHighScore")
+        if (request.Name == "getHighScore")
         {
-          var (token, userHighScore) = request.GetParams<(string, int)>();
-          Console.WriteLine($"DEBUG: Received token {token} and score {userHighScore}");
+          bool found = false;
+          var token = request.GetParams<string>();
           var user = database.Users.FirstOrDefault(u => u.Token == token);
           if(user == null)
           {
             request.Respond<string?>(null);
             continue;
           }
-          user.HighScore = userHighScore;
-          database.Entry(user).State = EntityState.Modified;
-          database.SaveChanges();
-          request.Respond(user);
+          var scores = database.Scores.OrderBy(score => -score.Amount).ToArray();
+
+          for(var i = 0; i<scores.Length; i++)
+          {
+            if (scores[i].UserId == user!.Id)
+            {
+              request.Respond(scores[i].Amount);
+              found = true;
+              break;
+            }
+          }
+
+          if (!found) request.Respond(0);
         }
 
         if (request.Name == "submitScore")
         {
+          Console.WriteLine("step 1: got submitScore");
           var (token, score) = request.GetParams<(string, int)>();
+          Console.WriteLine($"step 2: token={token}, score={score}");
           var user = database.Users.FirstOrDefault(u => u.Token == token);
-          var NewScore = new UScore(user!.Id, score);
+          Console.WriteLine($"step 3: user={user?.Username ?? "null"}");
+          if(user == null)
+          {
+            request.Respond<string?>(null);
+            continue;
+          }
+
+          if(score > user.HighScore)
+          {
+            user.HighScore = score;
+            database.SaveChanges();
+          }
+
+          UScore NewScore = new UScore(user.Id, score);
+          Console.WriteLine($"step 4: saving score");
+          database.Scores.Add(NewScore);
+          database.SaveChanges();
+          Console.WriteLine($"step 5: saved!");
+          request.Respond(NewScore);
         }
 
         if (request.Name == "getTop10")
         {
-          var scores = database.Scores.OrderBy(score => -score.Amount).Take(10).ToArray();
-          request.Respond(scores);
+          User[] highScores = database.Users.OrderBy(user1 => -user1.HighScore).Take(10).ToArray();
+          request.Respond(highScores);
         }
 
         if (request.Name == "getPlacement")
         {
+          bool found = false;
           var token = request.GetParams<string>();
+          Console.WriteLine("got token: " + token);
           var user = database.Users.FirstOrDefault(u => u.Token == token);
-          var scores = database.Scores.OrderBy(score => -score.Amount).Take(10).ToArray();
-
-          for (var i = 0; i<scores.Length; i++)
+          if (user == null)
           {
-            var UserByID = database.Users.FirstOrDefault(u => u.Id == scores[i].UserID);
-            if (UserByID == user)
+            request.Respond<string?>(null);
+            continue;
+          }
+          Console.WriteLine("got user: " + user.Username + ", id: " + user.Id);
+          User[] UsersByScore = database.Users.OrderBy(user1 => -user1.HighScore).ToArray();
+
+          for(var i = 0; i<UsersByScore.Length; i++)
+          {
+            Console.WriteLine("comparing username, id: " + user.Username + " " + user.Id + " to id: " + UsersByScore[i].Id);
+            if(UsersByScore[i].Id == user.Id)
             {
+              Console.WriteLine($"comparing userid {user.Id} to {UsersByScore[i].Id}");
               request.Respond(i+1);
+              Console.WriteLine($"found user placmet: {i+1}");
+              found = true;
+              continue;
             }
           }
-          request.Respond<string?>(null);
+        if (!found) request.Respond(0);
         }
       }
       catch (Exception exception)
@@ -127,12 +169,13 @@ class User(string token, string username, string password)
   [JsonIgnore] public string Token { get; set; } = token;
   public string Username { get; set; } = username;
   [JsonIgnore] public string Password { get; set; } = password;
-  public int HighScore { get; set; } = 0;
+  public int HighScore { get; set; }= 0;
 }
 
 
 class UScore(int userId, int amount)
 {
-  public int UserID = userId;
-  public int Amount = amount;
+  public int Id { get; set; }
+  public int UserId { get; set; } = userId;
+  public int Amount { get; set; } = amount;
 }

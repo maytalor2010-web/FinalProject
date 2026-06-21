@@ -13,6 +13,7 @@ export type User = {
 }
 
 export type UScore = {
+  Id: number;
   UserID: number;
   Amount: number;
 }

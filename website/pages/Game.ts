@@ -4,23 +4,40 @@ import { create } from "componentUtilities";
 
 
 let SpawnFishInterval: number;
-let Token = localStorage.getItem("token")
+const Token = localStorage.getItem("token");
+var user = await send<User | null>("getUser", Token);
+
+//User Info HERE:
+
+let LogOutButton = document.querySelector<HTMLButtonElement>("#logOutButton")!;
+
+LogOutButton.onclick = function () {
+    localStorage.removeItem("token");
+    window.location.replace("index.html");
+}
+
 //Leaderboard Setup HERE:
 
-let Top10Users = await send("getTop10");
-let LeaderboardDiv = document.querySelector<HTMLDivElement>("#leaderboardDiv");
+let Top10Users = await send<User[]>("getTop10");
+let LeaderboardDiv = document.querySelector<HTMLDivElement>("#leaderboardDiv")!;
 
-for (let i = 0; i<10; i++)
+for (let i = 0; i<Top10Users.length; i++)
 {
-    let UserPlacement = await send("getPlacement", Token)
-    LeaderboardDiv?.append(
+    LeaderboardDiv.append(
         create("div", {className: "LDBUser"}, 
-            create("div", {className: "LDBUserInfo", innerText: ""}) //Rank and Username
-            create("div", {className: "LDBUserInfo", innerText: ""}) //Score
+            create("div", {className: "LDBUserInfo", innerText: (i+1).toString() + ". " + Top10Users[i].username}), //Rank and Username
+            create("div", {className: "LDBUserInfo", innerText: Top10Users[i].highScore.toString()}) //Score
         )
     )
 }
 
+let UserPlacement = await send("getPlacement", Token);
+if (UserPlacement == null) {
+    console.log("the user is unranked. ")
+}
+else {
+    console.log(UserPlacement.toString() + ". " + user!.username)
+}
 
 
 //Game Code HERE:
@@ -54,27 +71,16 @@ StartButton.onclick = function () {
             CreateFish();
         }
         else {
-            Token = localStorage.getItem("token");
-            var user = await send<User | null>("getUser", Token);
+            user = await send<User | null>("getUser", Token);
             HeartAmountP.innerText = "Game over. ";
             var FinalGameScore = parseInt(localStorage.getItem("score")!);
             if (user == null) {
-                console.log("user is null");
+                window.location.replace("index.html");
             }
             else {
-                console.log("User is not null");
-                if (FinalGameScore > user.highScore)
-                {
-                    //sends a request that sets a new high score in the DB, and that returns a user with which we check if it exists or if it doesn't (which returns null)
-                    console.log("Attempting to send request:", "setHighScore", Token, FinalGameScore);
-                    
-                    var UserCheck = await send<User | null>("setHighScore", Token, FinalGameScore);
-                    if (UserCheck == null)
-                    {
-                        window.location.replace("LogIn.html");
-                    }
-                    clearInterval(SpawnFishInterval);
-                }
+                console.log("User is not null");//DO CLEAR INTERVAL
+                await send("submitScore", [localStorage.getItem("token"), FinalGameScore]); //if null, user not found. 
+                clearInterval(SpawnFishInterval);
             }
             
         }
