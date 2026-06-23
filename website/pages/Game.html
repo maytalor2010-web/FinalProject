@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="Game.css" />
-        <title>Game — Fishing Game</title>
+        <title>Fishit!</title>
     </head>
     <body>
         <div id="generalDiv">
@@ -13,8 +13,23 @@
                         <button id="logOutButton">Log Out</button>
                     </div> 
                     <div id="userInfoStatsDiv">
-                        <span id="LDBPlacementSpan" class="userStats">Leaderboard Placement: unranked</span>
+                        <span id="LDBPlacementSpan" class="userStats">Leaderboard Placement: loading...</span>
                         <span id="totalGamesSpan" class="userStats">Total Games: loading...</span>
+                        <span id="highScoreDiv" class="userStats">High Score: loading...</span>
+                    </div>
+                </div>
+                <div id="fishInfoDiv">
+                    <div class="fishContainer">
+                        <img src="../image/normal-fish-face-right.png" alt="Normal Fish" class="fishInContainer">
+                        <div class="fishDesc">Gives +5 points on click, removes a heart if missed. </div>
+                    </div>
+                    <div class="fishContainer">
+                        <img src="../image/gold-fish-face-right.png" alt="Gold Fish" class="fishInContainer">
+                        <div class="fishDesc">Gives +10 points on click, extra fast. </div>
+                    </div>
+                    <div class="fishContainer">
+                        <img src="../image/pufferfish-face-right.png" alt="Pufferfish" class="fishInContainer">
+                        <div class="fishDesc">-1 Hearts on click. </div>
                     </div>
                 </div>
                 <div id="genLeaderboardDiv">

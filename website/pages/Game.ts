@@ -12,11 +12,14 @@ var user = await send<User | null>("getUser", Token);
 let LogOutButton = document.querySelector<HTMLButtonElement>("#logOutButton")!;
 let LDBPlacementSpan = document.querySelector<HTMLSpanElement>("#LDBPlacementSpan")!;
 let TotalGamesSpan = document.querySelector<HTMLSpanElement>("#totalGamesSpan")!;
+let HighScoreSpan = document.querySelector<HTMLSpanElement>("#highScoreDiv")!;
 let Placement = await send<number>("getPlacement", Token);
 let GameAmount = await send<number>("getGameAmount", Token);
+let UserHighScore = await send<number>("getHighScore", Token);
 
 LDBPlacementSpan.innerText = "Leaderboard Placement: #" + Placement;
 TotalGamesSpan.innerText = "Total Games: " + GameAmount;
+HighScoreSpan.innerText = "High Score: " + UserHighScore;
 
 
 const usernameSpan = document.querySelector<HTMLSpanElement>("#usernameSpan")!;
@@ -88,7 +91,6 @@ StartButton.onclick = function () {
         }
         else {
             user = await send<User | null>("getUser", Token);
-            GameOverDiv.style.display = "block";
             var FinalGameScore = parseInt(localStorage.getItem("score")!);
             if (user == null) {
                 window.location.replace("index.html");
@@ -224,6 +226,7 @@ function LoseHeart() {
     } else {
         StartButton.innerText = "Try Again";
         StartButton.style.display = "block";
+        GameOverDiv.style.display = "block";
     }
 }
 
