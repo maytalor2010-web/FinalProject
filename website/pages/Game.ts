@@ -10,6 +10,19 @@ var user = await send<User | null>("getUser", Token);
 //User Info HERE:
 
 let LogOutButton = document.querySelector<HTMLButtonElement>("#logOutButton")!;
+let LDBPlacementSpan = document.querySelector<HTMLSpanElement>("#LDBPlacementSpan")!;
+let TotalGamesSpan = document.querySelector<HTMLSpanElement>("#totalGamesSpan")!;
+let Placement = await send<number>("getPlacement", Token);
+let GameAmount = await send<number>("getGameAmount", Token);
+
+LDBPlacementSpan.innerText = "Leaderboard Placement: #" + Placement;
+TotalGamesSpan.innerText = "Total Games: " + GameAmount;
+
+
+const usernameSpan = document.querySelector<HTMLSpanElement>("#usernameSpan")!;
+if (user != null) {
+    usernameSpan.innerText = "🎣 " + user.username;
+}
 
 LogOutButton.onclick = function () {
     localStorage.removeItem("token");
@@ -43,10 +56,10 @@ else {
 //Game Code HERE:
 
 let StartButton = document.querySelector<HTMLButtonElement>("#startButton")!;
-let TryAgainButton = document.querySelector<HTMLButtonElement>("#tryAgainButton")!;
 let FishSpawnDiv = document.querySelector<HTMLDivElement>("#fishSpawnDiv")!;
 let HeartAmountP = document.querySelector<HTMLParagraphElement>("#heartAmountP")!;
 let ScoreP = document.querySelector<HTMLParagraphElement>("#scoreP")!;
+let GameOverDiv = document.querySelector<HTMLDivElement>("#gameOverSpan")!;
 
 const HeartAmount = 3;           //the amount of hearts every game starts with
 let FishClickedCount = 0;     //resets every game
@@ -55,7 +68,10 @@ let FishScoreAdd = 0;         //the amount of points a fish adds to the total sc
 
 localStorage.setItem("score", ScoreCount.toString());
 
+
+
 StartButton.onclick = function () {
+    GameOverDiv.style.display = "none";
     StartButton.style.display = "none";
     FishSpawnDiv.style.display = "block";
     ScoreCount = 0;
@@ -72,7 +88,7 @@ StartButton.onclick = function () {
         }
         else {
             user = await send<User | null>("getUser", Token);
-            HeartAmountP.innerText = "Game over. ";
+            GameOverDiv.style.display = "block";
             var FinalGameScore = parseInt(localStorage.getItem("score")!);
             if (user == null) {
                 window.location.replace("index.html");
@@ -80,6 +96,7 @@ StartButton.onclick = function () {
             else {
                 console.log("User is not null");//DO CLEAR INTERVAL
                 await send("submitScore", [localStorage.getItem("token"), FinalGameScore]); //if null, user not found. 
+                localStorage.setItem("btnTryAgain", "True");
                 clearInterval(SpawnFishInterval);
             }
             
@@ -207,15 +224,6 @@ function LoseHeart() {
     } else {
         StartButton.innerText = "Try Again";
         StartButton.style.display = "block";
-        HeartAmountP.innerText = "Game over.";
     }
 }
-
-
-// var intervalId = setInterval(function() {
-//     console.log("sga");
-// }, 3000);
-
-// clearInterval(intervalId);
-
 

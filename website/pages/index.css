@@ -1,20 +1,39 @@
-#containerDiv {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+.hero {
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
-.authDiv {
-  margin: 1rem;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1rem;
+.fish-icon {
+  font-size: 5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  animation: bob 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+.title {
+  font-size: 4rem;
+  color: var(--teal);
+  text-shadow: 0 0 40px rgba(0, 212, 170, 0.3);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+}
+
+.auth-links {
   display: flex;
-  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
   align-items: center;
 }
 
-body {
-  background-image: none;
-}
+

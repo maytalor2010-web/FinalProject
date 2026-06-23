@@ -146,6 +146,21 @@ class Program
           }
         if (!found) request.Respond(0);
         }
+
+        if (request.Name == "getGameAmount")
+        {
+          var token = request.GetParams<string>();
+          var user = database.Users.FirstOrDefault(u => u.Token == token);
+          if (user == null)
+          {
+            Console.WriteLine("Got requets getGameAmount and user is null");
+            request.Respond<string?>(null);
+            continue;
+          }
+          int AllGames = database.Scores.Count(score => score.UserId == user.Id);
+          request.Respond(AllGames);
+        }
+
       }
       catch (Exception exception)
       {

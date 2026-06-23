@@ -1,16 +1,69 @@
-#containerDiv {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.page-center {
+  text-align: center;
 }
 
-h1 {
-  font-size: 100px;
-  margin-bottom: 0px;
+.not-found-404 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 8rem;
+  color: var(--teal);
+  line-height: 1;
+  letter-spacing: 4px;
 }
 
-h2 {
-  font-size: 50px;
-  margin-top: 0px;
+.not-found-fish {
+  font-size: 3rem;
+  display: block;
+  margin: 0.5rem 0;
+  animation: lost-bob 3s ease-in-out infinite;
 }
 
+@keyframes lost-bob {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50%       { transform: translateY(-10px) rotate(5deg); }
+}
+
+.no.page-center {
+  text-align: center;
+}
+
+.not-found-404 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 8rem;
+  color: var(--teal);
+  line-height: 1;
+  letter-spacing: 4px;
+}
+
+.not-found-fish {
+  font-size: 3rem;
+  display: block;
+  margin: 0.5rem 0;
+  animation: lost-bob 3s ease-in-out infinite;
+}
+
+@keyframes lost-bob {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50%       { transform: translateY(-10px) rotate(5deg); }
+}
+
+.not-found-title {
+  font-size: 2rem;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+}
+
+.not-found-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 1.75rem;
+}t-found-title {
+  font-size: 2rem;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+}
+
+.not-found-sub {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 1.75rem;
+}

@@ -1,0 +1,163 @@
+/* this file is a shared css file for all of the pages. it is linked to all. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --navy:      #0a1628;
+  --ocean:     #1a3a5c;
+  --teal:      #00d4aa;
+  --teal-dark: #00a888;
+  --gold:      #f5a623;
+  --white:     #e8f4f8;
+  --muted:     #8ab4cc;
+  --danger:    #ff4757;
+  --panel-bg:  rgba(26, 58, 92, 0.85);
+  --radius:    12px;
+  --radius-sm: 8px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(0, 212, 170, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(26, 58, 92, 0.5) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1, h2, h3 {
+  font-family: 'Fredoka One', cursive;
+  letter-spacing: 0.5px;
+}
+
+.bubble-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 50%;
+  background: rgba(0, 212, 170, 0.08);
+  border: 1px solid rgba(0, 212, 170, 0.15);
+  animation: rise linear infinite;
+}
+
+@keyframes rise {
+  0%   { transform: translateY(0) scale(1);   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  border-radius: var(--radius);
+  backdrop-filter: blur(8px);
+}
+
+.btn {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  padding: 0.6rem 1.6rem;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--teal);
+  color: var(--navy);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 18px rgba(0, 212, 170, 0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--teal);
+  border: 1.5px solid var(--teal);
+}
+
+.btn-ghost:hover {
+  background: rgba(0, 212, 170, 0.1);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 14px rgba(255, 71, 87, 0.4);
+}
+
+input[type="text"],
+input[type="password"],
+input:not([type]) {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(0, 212, 170, 0.25);
+  background: rgba(10, 22, 40, 0.6);
+  color: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.15);
+}
+
+input::placeholder {
+  color: var(--muted);
+}
+
+.error-msg {
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  min-height: 1.2em;
+}
+
+.page-center {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}

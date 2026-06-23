@@ -1,114 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:     #0a1628;
+  --ocean:    #1a3a5c;
+  --teal:     #00d4aa;
+  --gold:     #f5a623;
+  --white:    #e8f4f8;
+  --muted:    #8ab4cc;
+  --danger:   #ff4757;
+  --panel-bg: rgba(10, 22, 40, 0.95);
+}
+
 body {
-  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--navy);
+  color: var(--white);
+  overflow: hidden;
+  height: 100vh;
 }
 
 #generalDiv {
-  margin: 0;
   display: flex;
   height: 100vh;
   width: 100vw;
 }
 
+/* ── Sidebar ── */
 
 #sideInfoDiv {
-  margin: 0;
-  width: 20%;
+  width: 22%;
+  min-width: 190px;
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: var(--panel-bg);
+  border-right: 1px solid rgba(0, 212, 170, 0.2);
+  z-index: 20;
 }
 
 #userInfoDiv {
-  height: 20%;
-  width: 100%;
-  background-color: gray;
-}
-
-#genLeaderboardDiv {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 212, 170, 0.15);
   display: flex;
   flex-direction: column;
-  height: 80%;
-  width: 100%;
-  background-color: black;
+  gap: 0.5rem;
+}
+
+#userInfoStatsDiv {
+  display: flex;
+  flex-direction: column;
+}
+
+.userStats {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+#userInfoTopDiv {
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#usernameSpan {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#logOutButton {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  border: 1.5px solid var(--danger);
+  background: transparent;
+  color: var(--danger);
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#logOutButton:hover {
+  background: rgba(255, 71, 87, 0.12);
+}
+
+/* ── Leaderboard ── */
+
+#genLeaderboardDiv {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 #LDBTitle {
-  background-color: rgb(71, 68, 68);
-  width: 100%;
-  height: 10%;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: var(--teal);
+  padding: 0.65rem 1rem;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(0, 212, 170, 0.15);
+  text-align: center;
 }
 
 #leaderboardDiv {
-  width: 100%;
-  height: 90%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.4rem 0;
+}
+
+#leaderboardDiv::-webkit-scrollbar { width: 4px; }
+#leaderboardDiv::-webkit-scrollbar-track { background: transparent; }
+#leaderboardDiv::-webkit-scrollbar-thumb { background: rgba(0,212,170,0.3); border-radius: 4px; }
+
+.LDBUser {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+  width: 90%;
+  margin-left: 5%;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+}
+
+.LDBUser:hover {
+  background: rgba(0, 212, 170, 0.06);
 }
 
 .LDBUserInfo {
-  background-color: rgb(96, 194, 161);
-  height: min-content;
-  width: 40%;
-  height: 6%;
+  font-size: 0.82rem;
+  color: var(--white);
 }
 
-
-
-.LDBUser {
-  padding-top: 2%;
-  padding-bottom: 2%;
-  display: flex;
-  justify-content: space-between;
-  background-color: aquamarine;
-  width: 100%;
-  height: min-content;
+.LDBUserInfo:last-child {
+  color: var(--gold);
+  font-weight: 700;
 }
 
-
+/* ── Game area ── */
 
 #gameDiv {
-  z-index: 5;
-  overflow: visible;
-  margin: 0;
-  width: 80%;
+  flex: 1;
   height: 100%;
-  background-color: aqua;
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  background: linear-gradient(180deg, #0d2540 0%, #0a1628 60%, #071020 100%);
+  overflow: hidden;
 }
 
 #gameScoreDiv {
-  z-index: 10;  
-  overflow: visible;
-  height: 15%;
-  width: 100%;
-  position: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 0.65rem 1.25rem;
+  background: rgba(10, 22, 40, 0.75);
+  border-bottom: 1px solid rgba(0, 212, 170, 0.15);
+  backdrop-filter: blur(6px);
 }
+
+#heartAmountP, #scoreP {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+#heartAmountP { color: var(--danger); }
+#scoreP       { color: var(--gold); }
 
 #fishSpawnDiv {
+  position: absolute;
+  top: 52px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 10;
   display: none;
-  overflow: visible;
-  height: 85%;
-  width: 100%;
-  position: fixed;
-  top: 15%;
+  overflow: hidden;
 }
 
-#startButton, #tryAgainButton{
+#gameOverSpan {
+  position: absolute;
+  z-index: 20;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Fredoka One', cursive;
+  color: var(--danger);
+  font-size: 3rem;
+  letter-spacing: 0.3px;
+  margin: 0;
+}
+
+/* ── Buttons ── */
+
+#startButton {
   position: absolute;
   z-index: 20;
   top: 50%;
-  left: 70%;
-  transform: translate(-70%, -50%);
-  height: 10%;
-  width: 40%;
-  border-radius: 30px;
-  font-size: 200%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+  padding: 0.7rem 2.8rem;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  background: var(--teal);
+  color: var(--navy);
+  transition: filter 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 0 0 28px rgba(0, 212, 170, 0.3);
 }
 
-#tryAgainButton {
-  display: none;
+#startButton:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 40px rgba(0, 212, 170, 0.5);
+  transform: translate(-50%, -50%) scale(1.04);
 }
 
+#startButton:active {
+  transform: translate(-50%, -50%) scale(0.97);
+}
+
+
+/* ── Fish ── */
 .NormalFishFaceRight, .GoldFishFaceRight, .PufferfishFaceRight {
   z-index: 15;
   position: absolute;
@@ -118,6 +251,8 @@ body {
   animation-name: slideLtoR;
   animation-iteration-count: 1;
   animation-timing-function: linear;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  background-size: contain;
 }
 
 .NormalFishFaceLeft, .GoldFishFaceLeft, .PufferfishFaceLeft {
@@ -129,36 +264,23 @@ body {
   animation-name: slideRtoL;
   animation-iteration-count: 1;
   animation-timing-function: linear;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  background-size: contain;
 }
 
 .NormalFishFaceRight { background-image: url("../image/normal-fish-face-right.png"); animation-duration: 3s; }
-.NormalFishFaceLeft  { background-image: url("../image/normal-fish-face-left.png"); animation-duration: 3s; }
-
-.GoldFishFaceRight   { background-image: url("../image/gold-fish-face-right.png"); animation-duration: 1.5s; }
-.GoldFishFaceLeft    { background-image: url("../image/gold-fish-face-left.png"); animation-duration: 1.5s; }
-
-.PufferfishFaceRight { background-image: url("../image/pufferfish-face-right.png"); animation-duration: 3s; }
-.PufferfishFaceLeft  { background-image: url("../image/pufferfish-face-left.png"); animation-duration: 3s; }
-
-
-
-
-
+.NormalFishFaceLeft  { background-image: url("../image/normal-fish-face-left.png");  animation-duration: 3s; }
+.GoldFishFaceRight   { background-image: url("../image/gold-fish-face-right.png");   animation-duration: 1.5s; }
+.GoldFishFaceLeft    { background-image: url("../image/gold-fish-face-left.png");    animation-duration: 1.5s; }
+.PufferfishFaceRight { background-image: url("../image/pufferfish-face-right.png");  animation-duration: 3s; }
+.PufferfishFaceLeft  { background-image: url("../image/pufferfish-face-left.png");   animation-duration: 3s; }
 
 @keyframes slideLtoR {
-  0% {
-    transform: translateX(0); /* Starts at original position */
-  }
-  100% {
-    transform: translateX(calc(100vw)); /* Ends at edge of screen */
-  }
+  0%   { transform: translateX(-120px); }
+  100% { transform: translateX(100vw); }
 }
 
 @keyframes slideRtoL {
-  0% {
-    transform: translateX(100vw); /* Starts at original position */
-  }
-  100% {
-    transform: translateX(calc(0)); /* Ends at edge of screen */
-  }
+  0%   { transform: translateX(100vw); }
+  100% { transform: translateX(-120px); }
 }

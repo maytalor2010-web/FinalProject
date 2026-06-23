@@ -1,15 +1,42 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Log In</title>
-    </head>
-
-    <body>
-        <h1>Log In</h1>
-        <input id="username" placeholder="Username"> <br>
-        <input id="password" placeholder="Password"> <br>
-        <button id="login">Log In</button>
-        <div id="errorDiv"></div>
-        <script type="module" src="LogIn.js"></script>
-    </body>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="auth.css" />
+    <title>Log In — Fishing Game</title>
+  </head>
+  <body>
+    <div class="bubble-bg" id="bubbleBg"></div>
+    <div class="page-center">
+      <div class="auth-card panel">
+        <div class="auth-header">
+          <span class="auth-icon">🐠</span>
+          <h1>Welcome Back</h1>
+          <p>Log in to continue fishing</p>
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input id="username" type="text" placeholder="Your username" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Your password" />
+        </div>
+        <div id="errorDiv" class="error-msg"></div>
+        <button id="login" class="btn btn-primary full-width">Log In</button>
+        <p class="auth-switch">New here? <a href="SignUp.html">Create an account</a></p>
+      </div>
+    </div>
+    <script type="module" src="LogIn.js"></script>
+    <script>
+      const bg = document.getElementById('bubbleBg');
+      for (let i = 0; i < 18; i++) {
+        const b = document.createElement('div');
+        b.className = 'bubble';
+        const size = 16 + Math.random() * 40;
+        b.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;`;
+        bg.appendChild(b);
+      }
+    </script>
+  </body>
 </html>

@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <link rel="stylesheet" href="Game.css" />
-        <title>Game</title>
+        <title>Game — Fishing Game</title>
     </head>
-
-
     <body>
         <div id="generalDiv">
             <div id="sideInfoDiv">
                 <div id="userInfoDiv">
-                    <button id="logOutButton">Log Out</button>
-                    <!-- Username, Placement, HighScore, Game Amount -->
+                    <div id="userInfoTopDiv">
+                        <span id="usernameSpan">🎣 Loading...</span>
+                        <button id="logOutButton">Log Out</button>
+                    </div> 
+                    <div id="userInfoStatsDiv">
+                        <span id="LDBPlacementSpan" class="userStats">Leaderboard Placement: unranked</span>
+                        <span id="totalGamesSpan" class="userStats">Total Games: loading...</span>
+                    </div>
                 </div>
                 <div id="genLeaderboardDiv">
-                    <div id="LDBTitle">Leaderboard</div>
+                    <div id="LDBTitle">🏆 Leaderboard</div>
                     <div id="leaderboardDiv"></div>
                 </div>
             </div>
             <div id="gameDiv">
                 <div id="gameScoreDiv">
-                    <p id="heartAmountP"></p>
-                    <p id="scoreP"></p>
+                    <p id="heartAmountP">❤️ Hearts: 3</p>
+                    <p id="scoreP">⭐ Score: 0</p>
                 </div>
-                <div id="fishSpawnDiv">
-
-                </div>
+                <div id="fishSpawnDiv"></div>
+                <span id="gameOverSpan" style="display: none;">Game Over!</span>
                 <button id="startButton">Start Game</button>
-                <button id="tryAgainButton">Try Again</button>
             </div>
         </div>
         <script type="module" src="Game.js"></script>

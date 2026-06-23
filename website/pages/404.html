@@ -1,17 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>404</title>
-    <link rel="stylesheet" href="/website/pages/404.css" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="404.css" />
+    <title>404 — Fishing Game</title>
   </head>
-
   <body>
-    <div id="containerDiv">
-      <h1>404</h1>
-      <h2>Not Found</h2>
-      <div>The page you were looking for doesn't exist</div>
-      <br />
-      <a href="/website/pages/index.html">Go to the main page</a>
+    <div class="bubble-bg" id="bubbleBg"></div>
+    <div class="page-center">
+      <div class="not-found-404">404</div>
+      <span class="not-found-fish">🐠</span>
+      <h1 class="not-found-title">This page got away</h1>
+      <p class="not-found-sub">The page you were looking for doesn't exist.</p>
+      <a href="/website/pages/index.html" class="btn btn-primary">Go to main page</a>
     </div>
+    <script>
+      const bg = document.getElementById('bubbleBg');
+      for (let i = 0; i < 18; i++) {
+        const b = document.createElement('div');
+        b.className = 'bubble';
+        const size = 16 + Math.random() * 40;
+        b.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;`;
+        bg.appendChild(b);
+      }
+    </script>
   </body>
 </html>
