@@ -96,7 +96,7 @@ StartButton.onclick = function () {
             else {
                 console.log("User is not null");//DO CLEAR INTERVAL
                 await send("submitScore", [localStorage.getItem("token"), FinalGameScore]); //if null, user not found. 
-                localStorage.setItem("btnTryAgain", "True");
+                refreshLeaderboard();
                 clearInterval(SpawnFishInterval);
             }
             
@@ -227,3 +227,17 @@ function LoseHeart() {
     }
 }
 
+
+
+async function refreshLeaderboard() {
+    Top10Users = await send<User[]>("getTop10");
+    LeaderboardDiv.innerHTML = ""; // clear existing rows
+    for (let i = 0; i < Top10Users.length; i++) {
+        LeaderboardDiv.append(
+            create("div", {className: "LDBUser"},
+                create("div", {className: "LDBUserInfo", innerText: (i+1).toString() + ". " + Top10Users[i].username}),
+                create("div", {className: "LDBUserInfo", innerText: Top10Users[i].highScore.toString()})
+            )
+        )
+    }
+}
