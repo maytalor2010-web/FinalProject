@@ -4,6 +4,7 @@ import { create } from "componentUtilities";
 
 
 let SpawnFishInterval: number;
+let SpawnSharkInterval: number;
 const Token = localStorage.getItem("token");
 var user = await send<User | null>("getUser", Token);
 
@@ -73,7 +74,7 @@ localStorage.setItem("score", ScoreCount.toString());
 
 
 
-StartButton.onclick = function () {
+StartButton.onclick = function () { 
     GameOverDiv.style.display = "none";
     StartButton.style.display = "none";
     FishSpawnDiv.style.display = "block";
@@ -91,62 +92,74 @@ StartButton.onclick = function () {
         }
         else {
             user = await send<User | null>("getUser", Token);
-            var FinalGameScore = parseInt(localStorage.getItem("score")!);
+            // var FinalGameScore = parseInt(localStorage.getItem("score")!);
             if (user == null) {
                 window.location.replace("index.html");
             }
             else {
                 console.log("User is not null");//DO CLEAR INTERVAL
-                await send("submitScore", [localStorage.getItem("token"), FinalGameScore]); //if null, user not found. 
+                await send("submitScore", [localStorage.getItem("token"), ScoreCount]); //if null, user not found. 
                 refreshLeaderboard();
                 clearInterval(SpawnFishInterval);
             }
             
         }
     }, 1500);
+
+    let SharkIntervalTime = Math.random()*4000 + 8000;
+
+    SpawnSharkInterval = setInterval(() => {
+        let CurrentHearts = parseInt(localStorage.getItem("heartCount")!);
+        if(CurrentHearts > 0) {
+            SharkIntervalTime = Math.random()*4000 + 8000;
+            CreateShark();
+        }
+        else {
+            clearInterval(SharkIntervalTime);
+        }
+    }, SharkIntervalTime);
 }
 
 
 
 
 function CreateFish() {
-    
     let Fish = create("div")!;
     var decideType = Math.random();
     var decideDirection = Math.floor(Math.random() * 2);
     let seconds = 0;
-    if (decideType <= 0.75 && decideDirection == 0) { //normal fish face right
+    if (decideType <= 0.60 && decideDirection == 0) { //normal fish face right
         Fish = create("div", { className: "NormalFishFaceRight" })!;
         Fish.style.top = Math.random()*90 + "%";
         seconds = 3;
         FishScoreAdd = 5;
 
     }
-    else if (decideType <= 0.75 && decideDirection == 1) { //normal fish face left
+    else if (decideType <= 0.60 && decideDirection == 1) { //normal fish face left
         Fish = create("div", { className: "NormalFishFaceLeft" })!;
         Fish.style.top = Math.random()*90 + "%";
         seconds = 3;
         FishScoreAdd = 5;
     }
-    else if (decideType < 0.875 && decideDirection == 0) { //gold fish face right
+    else if (decideType < 0.75 && decideDirection == 0) { //gold fish face right
         Fish = create("div", { className: "GoldFishFaceRight" })!;
         Fish.style.top = Math.random()*90 + "%";
         seconds = 1.5;
         FishScoreAdd = 10;
     }
-    else if (decideType < 0.875 && decideDirection == 1) { //gold fish face left
+    else if (decideType < 0.75 && decideDirection == 1) { //gold fish face left
         Fish = create("div", { className: "GoldFishFaceLeft" })!;
         Fish.style.top = Math.random()*90 + "%";
         seconds = 1.5;
         FishScoreAdd = 10;
     }
-    else if (decideDirection == 0) { //pufferfish face right
+    else if (decideType < 0.90 && decideDirection == 0) { //pufferfish face right
         Fish = create("div", { className: "PufferfishFaceRight" })!;
         Fish.style.top = Math.random()*90 + "%";
         seconds = 3;
         FishScoreAdd = 0;
     }
-    else if (decideDirection == 1) { //pufferfish face left
+    else if (decideType < 0.90 && decideDirection == 1) { //pufferfish face left
         Fish = create("div", { className: "PufferfishFaceLeft" })!;
         Fish.style.top = Math.random()*90 + "%";
         seconds = 3;
@@ -203,6 +216,7 @@ function CreateFish() {
             localStorage.setItem("score", ScoreCount.toString());
             ScoreP.innerText = "Score: " + ScoreCount.toString();
         }
+
         else {
             return;
         }
@@ -216,9 +230,55 @@ function CreateFish() {
 
 }
 
+
+function CreateShark() {
+    let Fish = create("div")!;
+    var decideDirection = Math.floor(Math.random() * 2);
+    let seconds = 0;
+
+    if (decideDirection == 0) {
+        Fish = create("div", { className: "SharkFaceRight" })!;
+        Fish.style.top = Math.random()*90 + "%";
+        seconds = 6;
+        FishScoreAdd = 20;
+    }
+
+    else if (decideDirection == 1) {
+        Fish = create("div", { className: "SharkFaceLeft" })!;
+        Fish.style.top = Math.random()*90 + "%";
+        seconds = 6;
+        FishScoreAdd = 20;
+    }
+
+    Fish.addEventListener('animationend', function () {
+        Fish.remove();
+        console.log('Fish removed!');
+    })
+
+    let SharkClicked = 0;
+    Fish.onclick = function () {
+        console.log('Shark clicked!');
+        SharkClicked += 1;
+        if (SharkClicked == 5) {
+            ScoreCount += FishScoreAdd;
+            localStorage.setItem("score", ScoreCount.toString());
+            ScoreP.innerText = "Score: " + ScoreCount.toString();
+            Fish.remove();
+        }
+        
+    };
+
+    FishSpawnDiv.append(Fish);
+    console.log("Shark created")
+
+
+}
+
 function LoseHeart() {
     let Hearts = parseInt(localStorage.getItem("heartCount")!);
-    Hearts -= 1;
+    if (Hearts >0) {
+        Hearts -= 1;
+    }
     localStorage.setItem("heartCount", Hearts.toString());
 
     if (Hearts > 0) {

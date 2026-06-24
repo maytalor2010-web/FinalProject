@@ -277,7 +277,7 @@ body {
 
 
 /* -- Fish -- */
-.NormalFishFaceRight, .GoldFishFaceRight, .PufferfishFaceRight {
+.NormalFishFaceRight, .GoldFishFaceRight, .PufferfishFaceRight{
   z-index: 15;
   position: absolute;
   cursor: pointer;
@@ -290,7 +290,7 @@ body {
   background-size: contain;
 }
 
-.NormalFishFaceLeft, .GoldFishFaceLeft, .PufferfishFaceLeft {
+.NormalFishFaceLeft, .GoldFishFaceLeft, .PufferfishFaceLeft{
   z-index: 15;
   position: absolute;
   cursor: pointer;
@@ -303,12 +303,44 @@ body {
   background-size: contain;
 }
 
+.SharkFaceRight {
+  z-index: 15;
+  position: absolute;
+  cursor: pointer;
+  width: 200px;
+  height: 200px;
+  background-color: gray;
+  animation-name: slideLtoR;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  background-size: contain;
+}
+
+.SharkFaceLeft {
+  z-index: 15;
+  position: absolute;
+  cursor: pointer;
+  width: 200px;
+  height: 200px;
+  background-color: gray;
+  animation-name: slideRtoL;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  background-size: contain;
+
+}
+
 .NormalFishFaceRight { background-image: url("../image/normal-fish-face-right.png"); animation-duration: 3s; }
 .NormalFishFaceLeft  { background-image: url("../image/normal-fish-face-left.png");  animation-duration: 3s; }
 .GoldFishFaceRight   { background-image: url("../image/gold-fish-face-right.png");   animation-duration: 1.5s; }
 .GoldFishFaceLeft    { background-image: url("../image/gold-fish-face-left.png");    animation-duration: 1.5s; }
 .PufferfishFaceRight { background-image: url("../image/pufferfish-face-right.png");  animation-duration: 3s; }
 .PufferfishFaceLeft  { background-image: url("../image/pufferfish-face-left.png");   animation-duration: 3s; }
+.PufferfishFaceRight {animation-duration: 6s; }
+.PufferfishFaceLeft  {animation-duration: 6s; }
+
 
 @keyframes slideLtoR {
   0%   { transform: translateX(-120px); }
